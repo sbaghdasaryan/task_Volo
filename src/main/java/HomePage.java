@@ -9,12 +9,16 @@ import java.util.List;
 
 public class HomePage extends BasePage {
     @FindBy(id = "rb")
-    WebElement table;
+    private WebElement table;
 
     @FindBy(xpath = "//*[text()='Buy']")
-    List<WebElement> buyElems;
+    private List<WebElement> buyElems;
 
-    int[] valuesIndex = {6, 8, 10};
+    private int[] currencyIndexArray = {6, 8, 10};
+
+    public int[] getCurrencyIndexArray() {
+        return currencyIndexArray;
+    }
 
     public HomePage(WebDriver driver) {
         super(driver);
@@ -36,14 +40,16 @@ public class HomePage extends BasePage {
 
     public List<Float> getCurrencyValues(int i) {
         List<WebElement> webElements;
-        String currencyValue = String.format("tr[id] td:nth-of-type(%s)", (valuesIndex[i]));
+        String currencyValue = String.format("tr[id] td:nth-of-type(%s)", (currencyIndexArray[i]));
 
         webElements = wait.until(ExpectedConditions.visibilityOfAllElements(
                 driver.findElements(By.cssSelector(currencyValue))));
 
         List<Float> currencyValues = new ArrayList<>();
         for (WebElement webElement : webElements) {
-            currencyValues.add(Float.parseFloat(webElement.getText()));
+            if (!webElement.getText().isEmpty()) {
+                currencyValues.add(Float.parseFloat(webElement.getText()));
+            }
         }
         return currencyValues;
     }

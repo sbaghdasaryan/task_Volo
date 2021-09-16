@@ -33,7 +33,8 @@ public class TestHome {
         homePage.chooseLanguage("en");
         homePage.waitForPageLoad();
 
-        for (int i = 0; i < 3; i++) {
+        int currenciesCount = homePage.getCurrencyIndexArray().length;
+        for (int i = 0; i < currenciesCount; i++) {
             homePage.clickBuyButton(i);
 
             List<Float> currencyValues = homePage.getCurrencyValues(i);
